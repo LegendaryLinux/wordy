@@ -24,7 +24,17 @@ export const Wordy = () => {
     }
   }, [handleKeyDown, currentGuess, currentWord]);
 
+  const chooseNewWord = () => {
+    setCurrentWord(fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)]);
+    setCurrentAttempt(0);
+    setGuesses(new Array(numAttempts).fill(null));
+    setCurrentGuess('');
+    setIsSolved(false);
+  };
+
   const handleKeyDown = useCallback((evt) => {
+    if (isSolved || (currentAttempt === numAttempts)) {return;}
+
     if (evt.key) {
       if (evt.key === 'Backspace') {
         return setCurrentGuess((prev) => {
@@ -62,16 +72,19 @@ export const Wordy = () => {
         // Increment currentAttempt
         setCurrentAttempt((prev) => prev + 1);
 
+        if (currentWord === currentGuess) {
+          setIsSolved(true);
+        }
+
         // Reset currentGuess
         setCurrentGuess('');
       }
     }
-  }, [currentWord, currentGuess]);
+  }, [currentWord, currentGuess, isSolved]);
 
   return (
     <div id="wordy">
       <h1>Wordy</h1>
-      <h3>{currentWord}</h3>
 
       {
         guesses.map((guess, index) => {
@@ -79,7 +92,7 @@ export const Wordy = () => {
             return <GuessRow word={currentWord} guess={guess} attempt={currentAttempt} />;
           }
 
-          if (index === currentAttempt) {
+          if (!isSolved && (index === currentAttempt)) {
             return (
               <InputRow
                 numLetters={currentWord.length}
@@ -91,6 +104,26 @@ export const Wordy = () => {
 
           return <BlankRow numLetters={currentWord.length} attempt={index} />
         })
+      }
+
+      {
+        isSolved ? (
+          <div id="success-message">
+            Congratulations!
+            <br />
+            <button onClick={chooseNewWord}>New Word</button>
+          </div>
+        ) : null
+      }
+
+      {
+        (!isSolved && (currentAttempt === numAttempts)) ? (
+          <div id="failure-message">
+            Sorry! The correct word was:
+            <h3>{currentWord}</h3>
+            <button onClick={chooseNewWord}>Try Again</button>
+          </div>
+        ) : null
       }
     </div>
   );
