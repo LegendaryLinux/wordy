@@ -3,6 +3,7 @@ import fiveLetterWords from '../public/static/five_letter_words.json';
 import {GuessRow} from './GuessRow/GuessRow';
 import {BlankRow} from './BlankRow/BlankRow';
 import {InputRow} from './InputRow/InputRow';
+import {Keyboard} from './Keyboard/Keyboard';
 import './Wordy.css';
 
 export const Wordy = () => {
@@ -12,10 +13,6 @@ export const Wordy = () => {
   const [guesses, setGuesses] = useState(new Array(numAttempts).fill(null));
   const [currentGuess, setCurrentGuess] = useState('');
   const [isSolved, setIsSolved] = useState(false);
-
-  useEffect(() => {
-    console.debug(guesses);
-  }, [guesses]);
 
   useEffect(() => {
     document.body.addEventListener('keydown', handleKeyDown);
@@ -106,10 +103,12 @@ export const Wordy = () => {
         })
       }
 
+      <Keyboard currentWord={currentWord} guesses={guesses} />
+
       {
         isSolved ? (
-          <div id="success-message">
-            Congratulations!
+          <div className="success-message">
+            <h2>Congratulations!</h2>
             <br />
             <button onClick={chooseNewWord}>New Word</button>
           </div>
@@ -118,7 +117,7 @@ export const Wordy = () => {
 
       {
         (!isSolved && (currentAttempt === numAttempts)) ? (
-          <div id="failure-message">
+          <div className="failure-message">
             Sorry! The correct word was:
             <h3>{currentWord}</h3>
             <button onClick={chooseNewWord}>Try Again</button>

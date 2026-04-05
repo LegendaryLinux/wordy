@@ -3,7 +3,13 @@
     flex-direction: column;
     text-align: center;
 
-    #guess{
-        visibility: hidden;
+    .success-message{
+
+    }
+
+    .failure-message{
+        h3{
+            text-transform: uppercase;
+        }
     }
 }
