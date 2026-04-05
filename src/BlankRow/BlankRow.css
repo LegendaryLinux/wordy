@@ -1,0 +1,22 @@
+.blank-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1em;
+
+    &:last-child{
+        margin-bottom: unset;
+    }
+
+    .blank-cell{
+        border: 2px solid white;
+        width: 3em;
+        height: 3em;
+        margin-right: 1em;
+        border-radius: 8px;
+
+        &:last-child{
+            margin-right: unset;
+        }
+    }
+}

@@ -1,0 +1,9 @@
+#wordy{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    #guess{
+        visibility: hidden;
+    }
+}

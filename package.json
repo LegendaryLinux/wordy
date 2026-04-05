@@ -1,0 +1,39 @@
+{
+  "name": "wordy",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/LegendaryLinux/wordy#readme",
+  "bugs": {
+    "url": "https://github.com/LegendaryLinux/wordy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LegendaryLinux/wordy.git"
+  },
+  "license": "MIT",
+  "author": "Chris Wilson <chris@legendserver.info>",
+  "main": "index.js",
+  "scripts": {
+    "host": "http-server -p 8080 public",
+    "dev": "webpack --config webpack.config.dev.js --watch",
+    "build": "webpack --config webpack.config.prod.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-transform-runtime": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "babel-loader": "^10.1.1",
+    "css-loader": "^7.1.4",
+    "eslint": "^10.2.0",
+    "http-server": "^14.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2",
+    "@babel/runtime": "^7.29.2"
+  },
+  "dependencies": {
+  }
+}
