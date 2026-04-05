@@ -11,7 +11,10 @@ export const InputRow = ({numLetters, currentGuess, attempt}) => {
     <div className="input-row">
       {
         letters.map((letter, index) => {
-          const active = (index === currentGuess.length || 0) ? 'active' : '';
+          let active = (
+            (index === (currentGuess.length || 0)) ||
+            (index === 4 && currentGuess.length === 5)
+          ) ? 'active' : '';
           return (
             <div key={`input-${attempt}-${index}`} className={`input-cell ${active}`}>
               {letter}

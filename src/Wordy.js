@@ -25,10 +25,6 @@ export const Wordy = () => {
     setCurrentAttempt(0);
   }, [numAttempts]);
 
-  useEffect(() => {
-    console.debug('NEW:', currentGuess);
-  }, [currentGuess]);
-
   const handleKeyDown = useCallback((evt) => {
     if (evt.key) {
       if (evt.key === 'Backspace') {
@@ -43,12 +39,31 @@ export const Wordy = () => {
         return setCurrentGuess((prev) => {
           return (prev.length < currentWord.length) ?
             `${prev}${evt.key.toLowerCase()}` : // Append character
-            prev; // No change
+            prev.length === currentWord.length ?
+              `${prev.substring(0, currentWord.length - 1)}${evt.key.toLowerCase()}` : // Replace last character
+              prev; // No change
         });
       }
 
       if (evt.key === 'Enter') {
+        // Check that guess is five letters
+        if (currentGuess.length !== 5) {
+          alert('Word must be five letters.');
+          return;
+        }
 
+        // Check that word exists in list
+        if (!fiveLetterWords.includes(currentGuess)) {
+          alert('Unknown word.');
+          return;
+        }
+
+        // Add word to guesses
+        setGuesses((prev) => {});
+
+        // Increment currentAttempt
+
+        // Reset currentGuess
       }
     }
   }, [currentWord]);
