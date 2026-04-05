@@ -14,16 +14,15 @@ export const Wordy = () => {
   const [isSolved, setIsSolved] = useState(false);
 
   useEffect(() => {
+    console.debug(guesses);
+  }, [guesses]);
+
+  useEffect(() => {
     document.body.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.removeEventListener('keydown', handleKeyDown);
     }
-  }, [handleKeyDown]);
-
-  useEffect(() => {
-    setGuesses(new Array(numAttempts).fill(null));
-    setCurrentAttempt(0);
-  }, [numAttempts]);
+  }, [handleKeyDown, currentGuess, currentWord]);
 
   const handleKeyDown = useCallback((evt) => {
     if (evt.key) {
@@ -52,21 +51,22 @@ export const Wordy = () => {
           return;
         }
 
-        // Check that word exists in list
-        if (!fiveLetterWords.includes(currentGuess)) {
-          alert('Unknown word.');
-          return;
-        }
+        // TODO: Maybe check for non-real words?
 
         // Add word to guesses
-        setGuesses((prev) => {});
+        setGuesses((prev) => {
+          prev[currentAttempt] = currentGuess;
+          return prev;
+        });
 
         // Increment currentAttempt
+        setCurrentAttempt((prev) => prev + 1);
 
         // Reset currentGuess
+        setCurrentGuess('');
       }
     }
-  }, [currentWord]);
+  }, [currentWord, currentGuess]);
 
   return (
     <div id="wordy">
@@ -76,7 +76,7 @@ export const Wordy = () => {
       {
         guesses.map((guess, index) => {
           if (guess) {
-            return 'Guess Row';
+            return <GuessRow word={currentWord} guess={guess} attempt={currentAttempt} />;
           }
 
           if (index === currentAttempt) {
