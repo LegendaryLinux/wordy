@@ -36,6 +36,13 @@ export const Keyboard = ({currentWord, guesses}) => {
     return letterClass;
   };
 
+  const handleKeyClick = (letter) => {
+    document.body.dispatchEvent(new KeyboardEvent('keydown', {
+      key: letter,
+      bubbles: true,
+    }));
+  };
+
   return (
     <div className="keyboard">
       <div className="q-row">
@@ -45,7 +52,7 @@ export const Keyboard = ({currentWord, guesses}) => {
               getLetterCorrectnessClass(letter) :
               '';
             return (
-              <div key={letter} className={`letter-key ${letterClass}`}>
+              <div key={letter} className={`kb-key letter-key ${letterClass}`} onClick={() => handleKeyClick(letter)}>
                 {letter}
               </div>
             );
@@ -60,7 +67,7 @@ export const Keyboard = ({currentWord, guesses}) => {
               getLetterCorrectnessClass(letter) :
               '';
             return (
-              <div key={letter} className={`letter-key ${letterClass}`}>
+              <div key={letter} className={`kb-key letter-key ${letterClass}`} onClick={() => handleKeyClick(letter)}>
                 {letter}
               </div>
             );
@@ -69,18 +76,24 @@ export const Keyboard = ({currentWord, guesses}) => {
       </div>
 
       <div className="z-row">
+        <div key="Backspace" className="kb-key delete-key" onClick={() => handleKeyClick('Backspace')}>
+          Delete
+        </div>
         {
           ['z','x','c','v','b','n','m'].map((letter) => {
             const letterClass = triedLetters.has(letter) ?
               getLetterCorrectnessClass(letter) :
               '';
             return (
-              <div key={letter} className={`letter-key ${letterClass}`}>
+              <div key={letter} className={`kb-key letter-key ${letterClass}`} onClick={() => handleKeyClick(letter)}>
                 {letter}
               </div>
             );
           })
         }
+        <div key="Enter" className="kb-key enter-key" onClick={() => handleKeyClick('Enter')}>
+          Enter
+        </div>
       </div>
     </div>
   );

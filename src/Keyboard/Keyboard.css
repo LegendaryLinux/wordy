@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     margin: 2em auto;
+    user-select: none;
 
     .q-row, .a-row, .z-row{
         display: flex;
@@ -9,29 +10,37 @@
         margin-left: auto;
         margin-right: auto;
 
-        .letter-key{
+        .kb-key{
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             border: 1px solid white;
-            width: 3rem;
-            height: 3rem;
-            text-transform: capitalize;
             margin: 0.25em;
             background-color: #7d7d7d;
             font-size: 1.5em;
+            cursor: pointer;
 
-            &.correct{
-                background-color: #088008;
+            &.letter-key{
+                width: 3rem;
+                height: 3rem;
+                text-transform: capitalize;
+
+                &.correct{
+                    background-color: #088008;
+                }
+
+                &.included{
+                    background-color: #9e9e1a;
+                }
+
+                &.wrong{
+                    background-color: unset;
+                }
             }
 
-            &.included{
-                background-color: #9e9e1a;
-            }
-
-            &.wrong{
-                background-color: unset;
+            &.enter-key, &.delete-key{
+                padding: 0 0.5rem;
             }
         }
     }
