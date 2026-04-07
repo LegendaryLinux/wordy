@@ -6,6 +6,8 @@
     .q-row, .a-row, .z-row{
         display: flex;
         flex-direction: row;
+        margin-left: auto;
+        margin-right: auto;
 
         .letter-key{
             display: flex;
@@ -13,12 +15,12 @@
             align-items: center;
             text-align: center;
             border: 1px solid white;
-            border-radius: 8px;
-            width: 2em;
-            height: 2em;
+            width: 3rem;
+            height: 3rem;
             text-transform: capitalize;
             margin: 0.25em;
             background-color: #7d7d7d;
+            font-size: 1.5em;
 
             &.correct{
                 background-color: #088008;
@@ -32,13 +34,5 @@
                 background-color: unset;
             }
         }
-    }
-
-    .a-row{
-        margin-left: 1.25em;
-    }
-
-    .z-row{
-        margin-left: 3.75em;
     }
 }
