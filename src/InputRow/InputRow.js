@@ -1,14 +1,14 @@
 import React from 'react';
 import './InputRow.css';
 
-export const InputRow = ({numLetters, currentGuess, attempt}) => {
+export const InputRow = ({numLetters, currentGuess, attempt, ref}) => {
   const letters = currentGuess.split('');
   while (letters.length < numLetters) {
     letters.push(null);
   }
 
   return (
-    <div className="input-row">
+    <div className="input-row" ref={ref}>
       {
         letters.map((letter, index) => {
           let active = (

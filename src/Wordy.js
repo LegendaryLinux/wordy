@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import possibleWords from '../public/static/possibleWords.json';
 import validWords from '../public/static/validWords.json';
 import {GuessRow} from './GuessRow/GuessRow';
@@ -14,6 +14,7 @@ export const Wordy = () => {
   const [guesses, setGuesses] = useState(new Array(numAttempts).fill(null));
   const [currentGuess, setCurrentGuess] = useState('');
   const [isSolved, setIsSolved] = useState(false);
+  const inputRowRef = useRef(null);
 
   useEffect(() => {
     document.body.addEventListener('keydown', handleKeyDown);
@@ -53,15 +54,13 @@ export const Wordy = () => {
       }
 
       if (evt.key === 'Enter') {
-        // Check that guess is five letters
-        if (currentGuess.length !== 5) {
-          alert('Word must be five letters.');
-          return;
-        }
-
-        // Check that provided word is valid
-        if (!validWords.includes(currentGuess)) {
-          alert('Invalid word.');
+        // Check that guess is five letters and is valid
+        if (currentGuess.length !== 5 || !validWords.includes(currentGuess)) {
+          if (inputRowRef.current) {
+            inputRowRef.current.classList.remove('shake');
+            void inputRowRef.current.offsetWidth;
+            inputRowRef.current.classList.add('shake');
+          }
           return;
         }
 
@@ -97,6 +96,7 @@ export const Wordy = () => {
           if (!isSolved && (index === currentAttempt)) {
             return (
               <InputRow
+                ref={inputRowRef}
                 numLetters={currentWord.length}
                 attempt={index}
                 currentGuess={currentGuess}
