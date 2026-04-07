@@ -43,7 +43,7 @@ export const Wordy = () => {
         });
       }
 
-      if (evt.key.length === 1 && /[A-z]/.test(evt.key)) {
+      if (evt.key.length === 1 && /[A-Za-z]/.test(evt.key)) {
         return setCurrentGuess((prev) => {
           return (prev.length < currentWord.length) ?
             `${prev}${evt.key.toLowerCase()}` : // Append character
