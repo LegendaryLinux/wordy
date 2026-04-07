@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import fiveLetterWords from '../public/static/five_letter_words.json';
+import possibleWords from '../public/static/possibleWords.json';
+import validWords from '../public/static/validWords.json';
 import {GuessRow} from './GuessRow/GuessRow';
 import {BlankRow} from './BlankRow/BlankRow';
 import {InputRow} from './InputRow/InputRow';
@@ -7,7 +8,7 @@ import {Keyboard} from './Keyboard/Keyboard';
 import './Wordy.css';
 
 export const Wordy = () => {
-  const [currentWord, setCurrentWord] = useState(fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)]);
+  const [currentWord, setCurrentWord] = useState(possibleWords[Math.floor(Math.random() * possibleWords.length)]);
   const [numAttempts, setNumAttempts] = useState(6);
   const [currentAttempt, setCurrentAttempt] = useState(0);
   const [guesses, setGuesses] = useState(new Array(numAttempts).fill(null));
@@ -22,7 +23,7 @@ export const Wordy = () => {
   }, [handleKeyDown, currentGuess, currentWord]);
 
   const chooseNewWord = () => {
-    setCurrentWord(fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)]);
+    setCurrentWord(possibleWords[Math.floor(Math.random() * possibleWords.length)]);
     setCurrentAttempt(0);
     setGuesses(new Array(numAttempts).fill(null));
     setCurrentGuess('');
@@ -58,7 +59,11 @@ export const Wordy = () => {
           return;
         }
 
-        // TODO: Maybe check for non-real words?
+        // Check that provided word is valid
+        if (!validWords.includes(currentGuess)) {
+          alert('Invalid word.');
+          return;
+        }
 
         // Add word to guesses
         setGuesses((prev) => {
