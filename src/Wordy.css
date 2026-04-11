@@ -13,3 +13,17 @@
         }
     }
 }
+
+.language-select{
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 0 0 16px;
+}
+
+.language-select select{
+    border: 1px solid #999;
+    border-radius: 4px;
+    padding: 4px 8px;
+}

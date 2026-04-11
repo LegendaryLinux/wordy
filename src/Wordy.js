@@ -1,27 +1,63 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import possibleWords from '../public/static/possibleWords.json';
-import validWords from '../public/static/validWords.json';
+import possibleWordsEn from '../public/static/possibleWords.json';
+import validWordsEn from '../public/static/validWords.json';
+import possibleWordsEs from '../public/static/possibleWords.es.json';
+import validWordsEs from '../public/static/validWords.es.json';
 import {GuessRow} from './GuessRow/GuessRow';
 import {BlankRow} from './BlankRow/BlankRow';
 import {InputRow} from './InputRow/InputRow';
 import {Keyboard} from './Keyboard/Keyboard';
 import './Wordy.css';
 
+const LANGUAGES = {
+  en: {
+    label: 'English',
+    possibleWords: possibleWordsEn,
+    validWords: validWordsEn,
+  },
+  es: {
+    label: 'Español',
+    possibleWords: possibleWordsEs,
+    validWords: validWordsEs,
+  },
+};
+
+const DEFAULT_LANGUAGE = 'en';
+const LANGUAGE_STORAGE_KEY = 'selectedLanguage';
+
+const chooseRandomWord = (words) => words[Math.floor(Math.random() * words.length)];
+
+const getStoredLanguage = () => {
+  const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  return LANGUAGES[storedLanguage] ? storedLanguage : DEFAULT_LANGUAGE;
+};
+
 export const Wordy = () => {
-  const [currentWord, setCurrentWord] = useState(possibleWords[Math.floor(Math.random() * possibleWords.length)]);
+  const initialLanguage = useRef(getStoredLanguage());
+  const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage.current);
+  const [currentWord, setCurrentWord] = useState(() => chooseRandomWord(LANGUAGES[initialLanguage.current].possibleWords));
   const [numAttempts, setNumAttempts] = useState(6);
   const [currentAttempt, setCurrentAttempt] = useState(0);
   const [guesses, setGuesses] = useState(new Array(numAttempts).fill(null));
   const [currentGuess, setCurrentGuess] = useState('');
   const [isSolved, setIsSolved] = useState(false);
   const inputRowRef = useRef(null);
+  const language = LANGUAGES[selectedLanguage];
 
-  const chooseNewWord = () => {
-    setCurrentWord(possibleWords[Math.floor(Math.random() * possibleWords.length)]);
+  const chooseNewWord = useCallback((languageKey = selectedLanguage) => {
+    const nextLanguage = LANGUAGES[languageKey];
+    setCurrentWord(chooseRandomWord(nextLanguage.possibleWords));
     setCurrentAttempt(0);
     setGuesses(new Array(numAttempts).fill(null));
     setCurrentGuess('');
     setIsSolved(false);
+  }, [numAttempts, selectedLanguage]);
+
+  const handleLanguageChange = (evt) => {
+    const nextLanguage = evt.target.value;
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+    setSelectedLanguage(nextLanguage);
+    chooseNewWord(nextLanguage);
   };
 
   const handleKeyDown = useCallback((evt) => {
@@ -48,7 +84,7 @@ export const Wordy = () => {
 
       if (evt.key === 'Enter') {
         // Check that guess is five letters and is valid
-        if (currentGuess.length !== 5 || !validWords.includes(currentGuess)) {
+        if (currentGuess.length !== 5 || !language.validWords.includes(currentGuess)) {
           if (inputRowRef.current) {
             inputRowRef.current.classList.remove('shake');
             void inputRowRef.current.offsetWidth;
@@ -74,7 +110,7 @@ export const Wordy = () => {
         setCurrentGuess('');
       }
     }
-  }, [currentWord, currentGuess, isSolved]);
+  }, [currentWord, currentGuess, currentAttempt, isSolved, language.validWords, numAttempts]);
 
   useEffect(() => {
     document.body.addEventListener('keydown', handleKeyDown);
@@ -86,6 +122,16 @@ export const Wordy = () => {
   return (
     <div id="wordy">
       <h1>Wordy</h1>
+
+      <label className="language-select">
+        <select value={selectedLanguage} onChange={handleLanguageChange}>
+          {
+            Object.entries(LANGUAGES).map(([languageKey, {label}]) => (
+              <option key={languageKey} value={languageKey}>{label}</option>
+            ))
+          }
+        </select>
+      </label>
 
       {
         guesses.map((guess, index) => {
@@ -115,7 +161,7 @@ export const Wordy = () => {
           <div className="success-message">
             <h2>Congratulations!</h2>
             <br />
-            <button onClick={chooseNewWord}>New Word</button>
+            <button onClick={() => chooseNewWord()}>New Word</button>
           </div>
         ) : null
       }
@@ -125,7 +171,7 @@ export const Wordy = () => {
           <div className="failure-message">
             Sorry! The correct word was:
             <h3>{currentWord}</h3>
-            <button onClick={chooseNewWord}>Try Again</button>
+            <button onClick={() => chooseNewWord()}>Try Again</button>
           </div>
         ) : null
       }
