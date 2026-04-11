@@ -12,6 +12,10 @@ import './Wordy.css';
 const LANGUAGES = {
   en: {
     label: 'English',
+    actionLabels: {
+      backspace: 'Delete',
+      enter: 'Enter',
+    },
     keyboardRows: [
       ['q','w','e','r','t','y','u','i','o','p'],
       ['a','s','d','f','g','h','j','k','l'],
@@ -22,6 +26,10 @@ const LANGUAGES = {
   },
   es: {
     label: 'Español',
+    actionLabels: {
+      backspace: 'Borrar',
+      enter: 'Enviar',
+    },
     keyboardRows: [
       ['q','w','e','r','t','y','u','i','o','p'],
       ['a','s','d','f','g','h','j','k','l','ñ'],
@@ -164,7 +172,12 @@ export const Wordy = () => {
         })
       }
 
-      <Keyboard currentWord={currentWord} guesses={guesses} keyboardRows={language.keyboardRows} />
+      <Keyboard
+        currentWord={currentWord}
+        guesses={guesses}
+        keyboardRows={language.keyboardRows}
+        actionLabels={language.actionLabels}
+      />
 
       {
         isSolved ? (

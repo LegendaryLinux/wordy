@@ -7,7 +7,17 @@ const DEFAULT_KEYBOARD_ROWS = [
   ['z','x','c','v','b','n','m'],
 ];
 
-export const Keyboard = ({currentWord, guesses, keyboardRows = DEFAULT_KEYBOARD_ROWS}) => {
+const DEFAULT_ACTION_LABELS = {
+  backspace: 'Delete',
+  enter: 'Enter',
+};
+
+export const Keyboard = ({
+  currentWord,
+  guesses,
+  keyboardRows = DEFAULT_KEYBOARD_ROWS,
+  actionLabels = DEFAULT_ACTION_LABELS,
+}) => {
   const triedLetters = new Set();
   for (let guess of guesses) {
     if (!guess) {continue;}
@@ -83,7 +93,7 @@ export const Keyboard = ({currentWord, guesses, keyboardRows = DEFAULT_KEYBOARD_
 
       <div className="z-row">
         <div key="Backspace" className="kb-key delete-key" onClick={() => handleKeyClick('Backspace')}>
-          Delete
+          {actionLabels.backspace}
         </div>
         {
           keyboardRows[2].map((letter) => {
@@ -98,7 +108,7 @@ export const Keyboard = ({currentWord, guesses, keyboardRows = DEFAULT_KEYBOARD_
           })
         }
         <div key="Enter" className="kb-key enter-key" onClick={() => handleKeyClick('Enter')}>
-          Enter
+          {actionLabels.enter}
         </div>
       </div>
     </div>
