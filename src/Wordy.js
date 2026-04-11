@@ -12,11 +12,21 @@ import './Wordy.css';
 const LANGUAGES = {
   en: {
     label: 'English',
+    keyboardRows: [
+      ['q','w','e','r','t','y','u','i','o','p'],
+      ['a','s','d','f','g','h','j','k','l'],
+      ['z','x','c','v','b','n','m'],
+    ],
     possibleWords: possibleWordsEn,
     validWords: validWordsEn,
   },
   es: {
     label: 'Español',
+    keyboardRows: [
+      ['q','w','e','r','t','y','u','i','o','p'],
+      ['a','s','d','f','g','h','j','k','l','ñ'],
+      ['z','x','c','v','b','n','m'],
+    ],
     possibleWords: possibleWordsEs,
     validWords: validWordsEs,
   },
@@ -72,7 +82,7 @@ export const Wordy = () => {
         });
       }
 
-      if (evt.key.length === 1 && /[A-Za-z]/.test(evt.key)) {
+      if (evt.key.length === 1 && /[A-Za-zÑñ]/.test(evt.key)) {
         return setCurrentGuess((prev) => {
           return (prev.length < currentWord.length) ?
             `${prev}${evt.key.toLowerCase()}` : // Append character
@@ -154,7 +164,7 @@ export const Wordy = () => {
         })
       }
 
-      <Keyboard currentWord={currentWord} guesses={guesses} />
+      <Keyboard currentWord={currentWord} guesses={guesses} keyboardRows={language.keyboardRows} />
 
       {
         isSolved ? (

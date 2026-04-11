@@ -1,7 +1,13 @@
 import React from 'react';
 import './Keyboard.css';
 
-export const Keyboard = ({currentWord, guesses}) => {
+const DEFAULT_KEYBOARD_ROWS = [
+  ['q','w','e','r','t','y','u','i','o','p'],
+  ['a','s','d','f','g','h','j','k','l'],
+  ['z','x','c','v','b','n','m'],
+];
+
+export const Keyboard = ({currentWord, guesses, keyboardRows = DEFAULT_KEYBOARD_ROWS}) => {
   const triedLetters = new Set();
   for (let guess of guesses) {
     if (!guess) {continue;}
@@ -47,7 +53,7 @@ export const Keyboard = ({currentWord, guesses}) => {
     <div className="keyboard">
       <div className="q-row">
         {
-          ['q','w','e','r','t','y','u','i','o','p'].map((letter) => {
+          keyboardRows[0].map((letter) => {
             const letterClass = triedLetters.has(letter) ?
               getLetterCorrectnessClass(letter) :
               '';
@@ -62,7 +68,7 @@ export const Keyboard = ({currentWord, guesses}) => {
 
       <div className="a-row">
         {
-          ['a','s','d','f','g','h','j','k','l'].map((letter) => {
+          keyboardRows[1].map((letter) => {
             const letterClass = triedLetters.has(letter) ?
               getLetterCorrectnessClass(letter) :
               '';
@@ -80,7 +86,7 @@ export const Keyboard = ({currentWord, guesses}) => {
           Delete
         </div>
         {
-          ['z','x','c','v','b','n','m'].map((letter) => {
+          keyboardRows[2].map((letter) => {
             const letterClass = triedLetters.has(letter) ?
               getLetterCorrectnessClass(letter) :
               '';
