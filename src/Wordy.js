@@ -16,13 +16,6 @@ export const Wordy = () => {
   const [isSolved, setIsSolved] = useState(false);
   const inputRowRef = useRef(null);
 
-  useEffect(() => {
-    document.body.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.body.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [handleKeyDown, currentGuess, currentWord]);
-
   const chooseNewWord = () => {
     setCurrentWord(possibleWords[Math.floor(Math.random() * possibleWords.length)]);
     setCurrentAttempt(0);
@@ -82,6 +75,13 @@ export const Wordy = () => {
       }
     }
   }, [currentWord, currentGuess, isSolved]);
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [handleKeyDown, currentGuess, currentWord]);
 
   return (
     <div id="wordy">
